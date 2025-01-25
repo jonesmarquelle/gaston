@@ -75,12 +75,17 @@ async function extractImage(url) {
   }
 }
 
+function isFacebookRequest(req) {
+  return req.headers['user-agent'] && req.headers['user-agent'].includes('facebook');
+}
+
 app.get('/', async (req, res) => {
   const fragment = req.query.url ? extractTextFragment(req.query.url) : '';
-  const urlTitle = req.query.url ? await extractTitle(req.query.url) : '';
+  const extractedTitle = req.query.url ? await extractTitle(req.query.url) : '';
+  const title = isFacebookRequest(req) ? `${extractedTitle}: \"${fragment}\"` : extractedTitle;
   const imageUrl = req.query.url ? await extractImage(req.query.url) : '';
   res.render('index', {
-    title: urlTitle || 'Page not found',
+    title: title || 'Page not found',
     description: fragment || 'Page not found',
     url: req.query.url,
     imageUrl: imageUrl || 'https://picsum.photos/200/300',
