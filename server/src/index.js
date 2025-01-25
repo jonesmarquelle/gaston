@@ -40,14 +40,50 @@ async function extractTitle(url) {
   }
 }
 
+async function extractImage(url) {
+  try {
+    const response = await axios.get(url, {
+      timeout: 5000  // 5 seconds timeout
+    });
+    const $ = cheerio.load(response.data);
+    
+    // Try to find Open Graph image first
+    let imageUrl = $('meta[property="og:image"]').attr('content');
+    
+    // If no OG image, try Twitter image
+    if (!imageUrl) {
+      imageUrl = $('meta[name="twitter:image"]').attr('content');
+    }
+    
+    // If no social media images, try first large image or favicon
+    if (!imageUrl) {
+      imageUrl = $('img[src*="logo"]').attr('src') ||
+                $('link[rel="icon"]').attr('href') ||
+                $('link[rel="shortcut icon"]').attr('href');
+    }
+    
+    // If relative URL, make it absolute
+    if (imageUrl && !imageUrl.startsWith('http')) {
+      const urlObject = new URL(url);
+      imageUrl = `${urlObject.origin}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+    }
+    
+    return imageUrl || '';
+  } catch (error) {
+    console.error('Error fetching image:', error.message);
+    return '';
+  }
+}
+
 app.get('/', async (req, res) => {
   const fragment = req.query.url ? extractTextFragment(req.query.url) : '';
   const urlTitle = req.query.url ? await extractTitle(req.query.url) : '';
+  const imageUrl = req.query.url ? await extractImage(req.query.url) : '';
   res.render('index', {
     title: urlTitle || 'Page not found',
     description: fragment || 'Page not found',
     url: req.query.url,
-    imageUrl: 'https://picsum.photos/200/300',
+    imageUrl: imageUrl || 'https://picsum.photos/200/300',
     themeColor: '#FFFFFF',
   });
 });
