@@ -7,61 +7,6 @@
       width: 300px;
       padding: 10px;
       font-family: Arial, sans-serif;
-      position: relative;
-      min-height: 150px;
-    }
-    #url-display {
-      word-break: break-all;
-      margin: 10px 0;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: #f9f9f9;
-    }
-    button {
-      width: 100%;
-      padding: 8px;
-      margin: 5px 0;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #settings-button {
-      background-color: #2196F3;
-    }
-    #settings-button:hover {
-      background-color: #1976D2;
-    }
-    .modal {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 1000;
-      background-color: white;
-    }
-    /* Hide main content when modal is shown */
-    .modal[style*="display: block"] ~ #url-display,
-    .modal[style*="display: block"] ~ button {
-      display: none;
-    }
-    .modal-content {
-      background-color: white;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      padding: 15px;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
     #server-url {
       width: calc(100% - 16px);
@@ -75,8 +20,21 @@
       gap: 8px;
       margin-top: 10px;
     }
-    .button-group button {
+    button {
+      width: 100%;
+      padding: 8px;
       margin: 0;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #reset-settings {
+      background-color: #f44336;
     }
     h3 {
       margin-top: 0;
@@ -85,20 +43,12 @@
   </style>
 </head>
 <body>
-  <div id="url-display"></div>
-  <button id="copy-button">Copy URL</button>
-  <button id="settings-button">Settings</button>
-
-  <div id="settings-modal" class="modal">
-    <div class="modal-content">
-      <h3>Settings</h3>
-      <label for="server-url">Server URL:</label>
-      <input type="text" id="server-url" placeholder="Enter server URL">
-      <div class="button-group">
-        <button id="save-settings">Save</button>
-        <button id="cancel-settings" style="background-color: #f44336;">Cancel</button>
-      </div>
-    </div>
+  <h3>Settings</h3>
+  <label for="server-url">Server URL:</label>
+  <input type="text" id="server-url" placeholder="Enter server URL">
+  <div class="button-group">
+    <button id="save-settings">Save</button>
+    <button id="reset-settings">Reset</button>
   </div>
 
   <script src="popup.js"></script>

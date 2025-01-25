@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "URL Extractor",
   "version": "1.0",
-  "description": "Extract current page URL with parameters",
+  "description": "Extract URL to highlighted text on current page",
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
@@ -13,6 +13,12 @@
   },
   "permissions": [
     "activeTab",
-    "storage"
-  ]
+    "storage",
+    "contextMenus",
+    "clipboardWrite",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
 } 
