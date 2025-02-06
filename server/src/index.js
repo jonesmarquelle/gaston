@@ -80,16 +80,25 @@ function isFacebookRequest(req) {
 }
 
 app.get('/', async (req, res) => {
-  const fragment = req.query.url ? extractTextFragment(req.query.url) : '';
-  const extractedTitle = req.query.url ? await extractTitle(req.query.url) : '';
+  const url = req.query.url
+  
+  if (!url) {
+    return res.status(404).send('URL not found');
+  }
+
+  const fragment = extractTextFragment(url);
+  const extractedTitle = await extractTitle(url);
   const title = isFacebookRequest(req) ? `${extractedTitle}: \"${fragment}\"` : extractedTitle;
-  const imageUrl = req.query.url ? await extractImage(req.query.url) : '';
+  const imageUrl = await extractImage(url);
+  
   res.render('index', {
     title: title || 'Page not found',
     description: fragment || 'Page not found',
-    url: req.query.url,
+    url: url,
     imageUrl: imageUrl || 'https://picsum.photos/200/300',
     themeColor: '#FFFFFF',
+    redirectUrl: url,
+    redirectDelay: 1
   });
 });
 
