@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  let EMBED_PASSTHROUGH_URL = 'http://localhost:3000';
-  
   // Load saved URL from storage
   const result = await chrome.storage.sync.get('serverUrl');
   if (result.serverUrl) {
@@ -8,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const saveButton = document.getElementById('save-settings');
-  const resetButton = document.getElementById('cancel-settings');
+  const resetButton = document.getElementById('reset-settings');
   const serverUrlInput = document.getElementById('server-url');
 
   // Set initial value
@@ -23,6 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   resetButton.addEventListener('click', () => {
-    serverUrlInput.value = EMBED_PASSTHROUGH_URL;
+    serverUrlInput.value = '';
+    chrome.storage.sync.set({ serverUrl: '' });
   });
 }); 
